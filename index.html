@@ -171,4 +171,56 @@ function showAbout(){
 </script>
 
 </body>
+</html>  .then(r=>r.json())
+  .then(d=>{
+    let ar=d.data[0].ayahs;
+    let en=d.data[1].ayahs;
+    let bn=d.data[2].ayahs;
+    let h="";
+    for(let i=0;i<ar.length;i++){
+      h+=`
+      <p class="ar">${ar[i].text}</p>
+      <p class="en">${en[i].text}</p>
+      <p class="bn">${bn[i].text}</p>
+      <hr>`;
+    }
+    document.getElementById("ayahs").innerHTML=h;
+  });
+}
+
+// -------- HADITH --------
+function showHadith(){
+  document.getElementById("content").innerHTML=`
+  <h3>📚 Sahih Hadith (Verified)</h3>
+
+  <p class="ar">إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ</p>
+  <p class="en">Actions are judged by intentions.</p>
+  <p class="bn">নিশ্চয়ই সব আমল নিয়তের উপর নির্ভরশীল।</p>
+  <p><b>Source:</b> Sahih Bukhari 1, Sahih Muslim 1907</p>
+  <hr>
+
+  <p class="ar">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</p>
+  <p class="en">The best of you are those who learn the Qur’an and teach it.</p>
+  <p class="bn">তোমাদের মধ্যে সর্বোত্তম সে, যে কুরআন শিখে এবং শিখায়।</p>
+  <p><b>Source:</b> Sahih Bukhari 5027</p>
+  <hr>
+
+  <p class="ar">الدِّينُ النَّصِيحَةُ</p>
+  <p class="en">Religion is sincere advice.</p>
+  <p class="bn">দ্বীন হলো আন্তরিক উপদেশ।</p>
+  <p><b>Source:</b> Sahih Muslim 55</p>
+  `;
+}
+
+// -------- ABOUT --------
+function showAbout(){
+  document.getElementById("content").innerHTML=`
+  <h3>ℹ️ About</h3>
+  <p>This website is dedicated to spreading authentic Islamic knowledge based on the Qur’an and Sahih Hadith.</p>
+  <p><b>Languages:</b> Arabic, English, Bengali</p>
+  `;
+}
+</script>
+
+</body>
 </html>
