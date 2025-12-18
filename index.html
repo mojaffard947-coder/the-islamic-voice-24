@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Islamic Voice 24</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    url("https://images.unsplash.com/photo-1580414057403-c5f451f30e1b");
+  background-size:cover;
+  background-attachment:fixed;
+  background-position:center;
+}
+
+header{
+  background:rgba(10,92,54,0.85);
+  color:#fff;
+  padding:15px;
+  text-align:center;
+}
+
+nav{
+  background:rgba(8,61,38,0.9);
+  padding:10px;
+  text-align:center;
+}
+
+nav button{
+  padding:8px 14px;
+  margin:5px;
+  border:none;
+  cursor:pointer;
+  background:#d4af37;
+  color:#000;
+  font-weight:bold;
+  border-radius:5px;
+}
+
+section{
+  background:rgba(255,255,255,0.92);
+  margin:15px;
+  padding:15px;
+  border-radius:10px;
+}
+
+select{
+  width:95%;
+  padding:10px;
+  margin:10px;
+}
+
+.ar{font-size:22px;direction:rtl}
+.en{color:#222}
+.bn{color:#004}
+hr{opacity:.3}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>The Islamic Voice 24</h2>
+<p>Qur’an & Sahih Hadith | Makkah & Madinah Theme</p>
+</header>
+
+<nav>
+<button onclick="showQuran()">📖 Qur’an</button>
+<button onclick="showHadith()">📚 Hadith</button>
+</nav>
+
+<section id="content">
+<p>একটি অপশন নির্বাচন করুন</p>
+</section>
+
+<script>
+// -------- QURAN --------
+function showQuran(){
+document.getElementById("content").innerHTML=`
+<h3>📖 Complete Qur’an</h3>
+<select id="surahList" onchange="loadSurah()">
+<option value="">সূরা নির্বাচন করুন</option>
+</select>
+<div id="ayahs">একটি সূরা নির্বাচন করুন</div>
+`;
+
+fetch("https://api.alquran.cloud/v1/surah")
+.then(r=>r.json())
+.then(d=>{
+let s=document.getElementById("surahList");
+d.data.forEach(x=>{
+let o=document.createElement("option");
+o.value=x.number;
+o.text=x.number+". "+x.englishName+" ("+x.name+")";
+s.appendChild(o);
+});
+});
+}
+
+function loadSurah(){
+let n=document.getElementById("surahList").value;
+if(!n) return;
+document.getElementById("ayahs").innerHTML="Loading...";
+
+fetch("https://api.alquran.cloud/v1/surah/"+n+"/editions/quran-uthmani,en.asad,bn.bengali")
+.then(r=>r.json())
+.then(d=>{
+let ar=d.data[0].ayahs;
+let en=d.data[1].ayahs;
+let bn=d.data[2].ayahs;
+let h="";
+for(let i=0;i<ar.length;i++){
+h+=`
+<p class="ar">${ar[i].text}</p>
+<p class="en">${en[i].text}</p>
+<p class="bn">${bn[i].text}</p>
+<hr>`;
+}
+document.getElementById("ayahs").innerHTML=h;
+});
+}
+
+// -------- HADITH --------
+function showHadith(){
+document.getElementById("content").innerHTML=`
+<h3>📚 Sahih Hadith</h3>
+<p class="ar">إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ</p>
+<p class="en">Actions are judged by intentions.</p>
+<p class="bn">নিশ্চয়ই সব আমল নিয়তের উপর নির্ভরশীল।</p>
+<p>(Sahih Bukhari)</p>
+
+<p style="color:red">
+⚠️ সম্পূর্ণ হাদিস ডাটাবেস পরের ধাপে যুক্ত করা যাবে
+</p>
+`;
+}
+</script>
+
+</body>
+</html>
